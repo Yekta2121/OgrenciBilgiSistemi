@@ -1,0 +1,43 @@
+﻿@model IEnumerable<OgrenciBilgiSistemi.Models.Ders>
+
+@{
+    ViewData["Title"] = "Ders Seçim Ekranı";
+}
+
+<div class="container mt-4">
+    <h2>Ders Seçim Ekranı</h2>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["Mesaj"]
+        </div>
+    }
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Ders Kodu</th>
+                <th>Ders Adı</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ders in Model)
+            {
+                <tr>
+                    <td>@ders.DersKodu</td>
+                    <td>@ders.DersAdi</td>
+                    <td>
+                        <!-- Örnek olarak sabit bir öğrenci numarasıyla test edebilirsiniz -->
+                        <form asp-action="DersSecimiYap" method="post" class="d-inline">
+                            <input type="hidden" name="ogrenciNo" value="2026001" />
+                            <input type="hidden" name="dersKodu" value="@ders.DersKodu" />
+                            <button type="submit" class="btn btn-success btn-sm">Dersi Seç</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

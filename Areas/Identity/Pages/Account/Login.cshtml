@@ -1,0 +1,140 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Giriş Yap";
+    // URL'den gelen role parametresini alıyoruz (Ogrenci, Akademisyen, Idari)
+    var role = Request.Query["role"].ToString();
+    if (string.IsNullOrEmpty(role)) { role = "Öğrenci"; }
+
+    // Görsel başlık uyarlaması
+    string baslik = role switch
+    {
+        "Akademisyen" => "Akademisyen",
+        "Idari" => "İdari",
+        _ => "Öğrenci"
+    };
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-1 rounded-2 p-4 bg-white">
+
+            <!-- Üst Başlık (Görsellerdeki gibi ortalanmış çerçeveli başlık) -->
+            <div class="text-center mb-4 position-relative">
+                <hr class="position-absolute w-100 top-50 translate-middle-y z-0 text-muted">
+                <span class="position-relative bg-white px-3 text-secondary fw-semibold fs-5 z-1">
+                    @baslik
+                </span>
+            </div>
+
+            <form id="loginForm" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                <!-- Kullanıcı Adı (Email) -->
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label text-dark small fw-bold">Kullanıcı Adı:</label>
+                    <input asp-for="Input.Email" id="loginEmail" class="form-control rounded-1" autocomplete="username" aria-required="true" placeholder="" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <!-- Şifre -->
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label text-dark small fw-bold">Şifre</label>
+                    <input asp-for="Input.Password" id="loginPassword" class="form-control rounded-1" autocomplete="current-password" aria-required="true" placeholder="" />
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+
+                <!-- Sayıların Toplamı (Güvenlik Kodu Simülasyonu) -->
+                <div class="mb-3">
+                    <label class="form-label text-dark small fw-bold">Sayıların Toplamı</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-danger fw-bold fst-italic user-select-none" style="letter-spacing: 2px;">
+                            96 + 5 = ?
+                        </span>
+                        <input type="text" id="loginCaptcha" class="form-control" placeholder="" required />
+                    </div>
+                </div>
+
+                <!-- Giriş Butonu -->
+                <div class="d-flex justify-content-end mb-3">
+                    <button id="login-submit" type="submit" class="btn btn-outline-secondary px-4 py-1 text-dark">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Giriş
+                    </button>
+                </div>
+
+                <!-- Şifremi Unuttum -->
+                <div class="text-center mb-3">
+                    <a id="forgot-password" asp-page="./ForgotPassword" class="text-primary small text-decoration-none">Şifremi Unuttum / Şifre Sıfırla</a>
+                </div>
+            </form>
+
+            <hr class="text-muted my-3">
+
+            <!-- E-Devlet ile Giriş Butonu (Gerçek e-Devlet Adresine Yönlendirir) -->
+            <div class="d-grid mb-3">
+                <a href="https://giris.turkiye.gov.tr" id="edevletBtn" target="_blank" class="btn text-white py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center text-decoration-none" style="background-color: #d9534f;">
+                    <span class="me-2 fs-5">©</span> E-Devlet İle Giriş
+                </a>
+            </div>
+
+            <!-- Alt Bilgiler ve Dinamik Sayaç -->
+            <div class="text-center text-muted small mt-2">
+                <a href="#" class="text-primary text-decoration-none">Duyurular için tıklayınız</a>
+                <div id="sessionTimer" class="mt-1 text-secondary fw-bold" style="font-size: 0.8rem;">Oturum Açmak İçin Kalan Süre: 05:00</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // 5 Dakika = 300 Saniye
+        let totalSeconds = 300;
+        const timerElement = document.getElementById("sessionTimer");
+        const loginForm = document.getElementById("loginForm");
+        const submitBtn = document.getElementById("login-submit");
+        const edevletBtn = document.getElementById("edevletBtn");
+
+        const countdown = setInterval(function () {
+            if (totalSeconds <= 0) {
+                clearInterval(countdown);
+                timerElement.innerText = "Oturum süresi doldu! Güvenliğiniz için işlem iptal edildi.";
+                timerElement.classList.remove("text-secondary");
+                timerElement.classList.add("text-danger");
+
+                // Form elemanlarını ve butonları devre dışı bırak
+                if (loginForm) {
+                    const inputs = loginForm.querySelectorAll("input, button");
+                    inputs.forEach(input => input.disabled = true);
+                }
+                if (submitBtn) submitBtn.disabled = true;
+
+                // e-Devlet butonunu devre dışı bırak ve tıklanmaz yap
+                if (edevletBtn) {
+                    edevletBtn.classList.add("disabled", "opacity-50");
+                    edevletBtn.style.pointerEvents = "none";
+                }
+
+                // İsteğe bağlı: 3 saniye sonra sayfayı yenile veya ana sayfaya at
+                setTimeout(function() {
+                    window.location.reload();
+                }, 4000);
+
+                return;
+            }
+
+            totalSeconds--;
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+
+            // Dakika ve saniyeyi iki haneli formata getir (Örn: 04:09)
+            let formattedMinutes = String(minutes).padStart(2, '0');
+            let formattedSeconds = String(seconds).padStart(2, '0');
+
+            timerElement.innerText = `Oturum Açmak İçin Kalan Süre: ${formattedMinutes}:${formattedSeconds}`;
+        }, 1000);
+    </script>
+}

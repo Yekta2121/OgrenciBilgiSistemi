@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Ana Sayfa - Öğrenci Bilgi Sistemi";
+}
+
+<div class="text-center my-4">
+    <h1 class="display-5 fw-bold text-primary mb-2">
+        <i class="bi bi-mortarboard-fill me-2"></i>Aydın Adnan Menderes Üniversitesi
+    </h1>
+    <p class="lead text-secondary">Öğrenci Bilgi Sistemi (OBS) Portalına Hoş Geldiniz</p>
+</div>
+
+@if (!SignInManager.IsSignedIn(User))
+{
+    <!-- Giriş Yapılmamışsa Gösterilecek 3'lü Buton Paneli (Gönderdiğiniz Görsele Uygun) -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="list-group list-group-flush text-center fs-5">
+                    <a href="/Identity/Account/Login?role=Ogrenci" class="list-group-item list-group-item-action py-3 text-primary fw-semibold">
+                        <i class="bi bi-person-badge me-2"></i>Öğrenci Girişi
+                    </a>
+                    <a href="/Identity/Account/Login?role=Akademisyen" class="list-group-item list-group-item-action py-3 text-success fw-semibold border-top">
+                        <i class="bi bi-person-workspace me-2"></i>Akademisyen Girişi
+                    </a>
+                    <a href="/Identity/Account/Login?role=Idari" class="list-group-item list-group-item-action py-3 text-danger fw-semibold border-top">
+                        <i class="bi bi-shield-lock me-2"></i>İdari Girişi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Giriş Yapılmışsa Kullanıcının Rolüne Göre Paneli -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 text-center">
+            <div class="alert alert-light border shadow-sm p-4">
+                <h3>Sisteme Giriş Yaptınız</h3>
+                <p class="text-muted">Hoş geldiniz, <strong>@UserManager.GetUserName(User)</strong></p>
+                <hr>
+                <p class="mb-3">Yetkinize uygun işlemleri üst menüden gerçekleştirebilirsiniz.</p>
+                <a class="btn btn-outline-danger btn-sm" href="/Identity/Account/Logout">Çıkış Yap</a>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,103 @@
+﻿@model OgrenciBilgiSistemi.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Bilgilerini Düzenle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-warning mb-1">
+                        <i class="bi bi-pencil-square me-2"></i>Öğrenci Düzenle
+                    </h2>
+                    <p class="text-muted small mb-0">Öğrenciye ait mevcut bilgileri aşağıdan güncelleyebilirsiniz.</p>
+                </div>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-3">
+                    <i class="bi bi-arrow-left me-1"></i>Listeye Dön
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="OlusturmaTarihi" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="TcKimlikNo" class="form-label fw-semibold">T.C. Kimlik No</label>
+                                <input asp-for="TcKimlikNo" class="form-control" maxlength="11" />
+                                <span asp-validation-for="TcKimlikNo" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="OgrenciNo" class="form-label fw-semibold">Öğrenci Numarası</label>
+                                <input asp-for="OgrenciNo" class="form-control" />
+                                <span asp-validation-for="OgrenciNo" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Ad" class="form-label fw-semibold">Ad</label>
+                                <input asp-for="Ad" class="form-control" />
+                                <span asp-validation-for="Ad" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Soyad" class="form-label fw-semibold">Soyad</label>
+                                <input asp-for="Soyad" class="form-control" />
+                                <span asp-validation-for="Soyad" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="KurumsalEposta" class="form-label fw-semibold">Kurumsal E-Posta</label>
+                                <input asp-for="KurumsalEposta" type="email" class="form-control" />
+                                <span asp-validation-for="KurumsalEposta" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="Sinif" class="form-label fw-semibold">Sınıf</label>
+                                <select asp-for="Sinif" class="form-select">
+                                    <option value="1">1. Sınıf</option>
+                                    <option value="2">2. Sınıf</option>
+                                    <option value="3">3. Sınıf</option>
+                                    <option value="4">4. Sınıf</option>
+                                </select>
+                                <span asp-validation-for="Sinif" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="KayitTuru" class="form-label fw-semibold">Kayıt Türü</label>
+                                <select asp-for="KayitTuru" class="form-select">
+                                    <option value="YKS">YKS</option>
+                                    <option value="DGS">DGS</option>
+                                    <option value="Yatay Geçiş">Yatay Geçiş</option>
+                                    <option value="YÖS">YÖS</option>
+                                </select>
+                                <span asp-validation-for="KayitTuru" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" asp-for="DurumAktifMi" />
+                                    <label class="form-check-label fw-semibold" asp-for="DurumAktifMi">Öğrenci Durumu Aktif Olsun</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                                <a asp-action="Index" class="btn btn-light px-4">İptal</a>
+                                <button type="submit" class="btn btn-warning px-4 text-white">
+                                    <i class="bi bi-save me-1"></i>Güncelle
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

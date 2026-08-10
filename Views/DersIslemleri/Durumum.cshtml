@@ -1,0 +1,36 @@
+﻿@model IEnumerable<OgrenciBilgiSistemi.Models.OgrenciNot>
+
+@{
+    ViewData["Title"] = "Not ve Devamsızlık Durumum";
+}
+
+<div class="container mt-4">
+    <h2>Not ve Devamsızlık Durumum</h2>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Ders Kodu</th>
+                <th>Harf Notu (DZ Kontrolü)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var notKaydi in Model)
+            {
+                <tr>
+                    <td>@notKaydi.DersId</td>
+                    <td>
+                        @if (notKaydi.HarfNotu == "DZ")
+                        {
+                            <span class="badge bg-danger">DZ (Devamsızlıktan Kaldı)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@notKaydi.HarfNotu</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

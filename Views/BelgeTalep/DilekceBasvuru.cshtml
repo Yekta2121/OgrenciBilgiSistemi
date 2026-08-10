@@ -1,0 +1,67 @@
+﻿@model IEnumerable<OgrenciBilgiSistemi.Models.DilekceBasvurusu>
+
+@{
+    ViewData["Title"] = "Dilekçe ve Mazeret Başvuruları";
+}
+
+<div class="container mt-4">
+    <h2><i class="bi bi-envelope-paper me-2"></i>Dilekçe ve Mazeret Başvuru Yönetimi</h2>
+    <hr />
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mesaj"]</div>
+    }
+
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>Yeni Başvuru / Dilekçe Oluştur</h4>
+        <form asp-action="DilekceGonder" method="post" class="row g-3 mt-2">
+            <div class="col-md-4">
+                <label class="form-label">Öğrenci Numarası</label>
+                <input type="text" name="ogrenciNo" class="form-control" placeholder="Örn: 2026001" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Başvuru Türü</label>
+                <select name="basvuruTuru" class="form-select">
+                    <option value="Sınav Mazeret Başvurusu">Sınav Mazeret Başvurusu</option>
+                    <option value="Kayıt Dondurma">Kayıt Dondurma</option>
+                    <option value="Yatay Geçiş Başvurusu">Yatay Geçiş Başvurusu</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Açıklama / Gerekçe</label>
+                <input type="text" name="aciklama" class="form-control" placeholder="Gerekçenizi kısaca yazın..." required />
+            </div>
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-success"><i class="bi bi-send me-1"></i>Başvuruyu İlgili Birime İlet</button>
+            </div>
+        </form>
+    </div>
+
+    <h4>Yapılan Başvuruların Takibi</h4>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Öğrenci No</th>
+                <th>Başvuru Türü</th>
+                <th>Açıklama</th>
+                <th>Tarih</th>
+                <th>Onay Durumu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.OgrenciNo</td>
+                    <td>@item.BasvuruTuru</td>
+                    <td>@item.Aciklama</td>
+                    <td>@item.BasvuruTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td><span class="badge bg-warning text-dark">@item.OnayDurumu</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,72 @@
+﻿@model OgrenciBilgiSistemi.Models.OgrenciNot
+
+@{
+    ViewData["Title"] = "Not Güncelle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-primary mb-1">
+                        <i class="bi bi-pencil-square me-2"></i>Not Bilgisi Güncelle
+                    </h2>
+                    <p class="text-muted small mb-0">Seçili öğrencinin sınav notlarını güncelleyebilirsiniz.</p>
+                </div>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-3">
+                    <i class="bi bi-arrow-left me-1"></i>Listeye Dön
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Öğrenci Seçimi</label>
+                                <select asp-for="OgrenciId" class="form-select" asp-items="ViewBag.OgrenciId"></select>
+                                <span asp-validation-for="OgrenciId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ders Seçimi</label>
+                                <select asp-for="DersId" class="form-select" asp-items="ViewBag.DersId"></select>
+                                <span asp-validation-for="DersId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="VizeNotu" class="form-label fw-semibold">Vize Notu (%40)</label>
+                                <input asp-for="VizeNotu" type="number" step="0.01" min="0" max="100" class="form-control" />
+                                <span asp-validation-for="VizeNotu" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="FinalNotu" class="form-label fw-semibold">Final Notu (%60)</label>
+                                <input asp-for="FinalNotu" type="number" step="0.01" min="0" max="100" class="form-control" />
+                                <span asp-validation-for="FinalNotu" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="ButunlemeNotu" class="form-label fw-semibold">Bütünleme Notu</label>
+                                <input asp-for="ButunlemeNotu" type="number" step="0.01" min="0" max="100" class="form-control" placeholder="İsteğe bağlı" />
+                                <span asp-validation-for="ButunlemeNotu" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                                <a asp-action="Index" class="btn btn-light px-4">İptal</a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-save me-1"></i>Güncelle ve Hesapla
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿@model OgrenciBilgiSistemi.Models.Ders
+
+@{
+    ViewData["Title"] = "Ders Düzenle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-warning mb-1">
+                        <i class="bi bi-pencil-square me-2"></i>Ders Düzenle
+                    </h2>
+                    <p class="text-muted small mb-0">Mevcut ders bilgilerini güncelleyebilirsiniz.</p>
+                </div>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-3">
+                    <i class="bi bi-arrow-left me-1"></i>Listeye Dön
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="DersKodu" class="form-label fw-semibold">Ders Kodu</label>
+                                <input asp-for="DersKodu" class="form-control" />
+                                <span asp-validation-for="DersKodu" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label asp-for="DersAdi" class="form-label fw-semibold">Ders Adı</label>
+                                <input asp-for="DersAdi" class="form-control" />
+                                <span asp-validation-for="DersAdi" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="TeoriSaat" class="form-label fw-semibold">Teori Saat</label>
+                                <input asp-for="TeoriSaat" type="number" class="form-control" min="0" />
+                                <span asp-validation-for="TeoriSaat" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="UygulamaSaat" class="form-label fw-semibold">Uygulama Saat</label>
+                                <input asp-for="UygulamaSaat" type="number" class="form-control" min="0" />
+                                <span asp-validation-for="UygulamaSaat" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="YerelKredi" class="form-label fw-semibold">Yerel Kredi</label>
+                                <input asp-for="YerelKredi" type="number" class="form-control" min="0" />
+                                <span asp-validation-for="YerelKredi" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="Akts" class="form-label fw-semibold">AKTS</label>
+                                <input asp-for="Akts" type="number" class="form-control" min="1" />
+                                <span asp-validation-for="Akts" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Yariyil" class="form-label fw-semibold">Yarıyıl (Dönem)</label>
+                                <select asp-for="Yariyil" class="form-select">
+                                    <option value="1">1. Yarıyıl (Güz)</option>
+                                    <option value="2">2. Yarıyıl (Bahar)</option>
+                                    <option value="3">3. Yarıyıl (Güz)</option>
+                                    <option value="4">4. Yarıyıl (Bahar)</option>
+                                    <option value="5">5. Yarıyıl (Güz)</option>
+                                    <option value="6">6. Yarıyıl (Bahar)</option>
+                                    <option value="7">7. Yarıyıl (Güz)</option>
+                                    <option value="8">8. Yarıyıl (Bahar)</option>
+                                </select>
+                                <span asp-validation-for="Yariyil" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" asp-for="ZorunluMu" />
+                                    <label class="form-check-label fw-semibold" asp-for="ZorunluMu">Zorunlu Ders</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                                <a asp-action="Index" class="btn btn-light px-4">İptal</a>
+                                <button type="submit" class="btn btn-warning px-4 text-white">
+                                    <i class="bi bi-save me-1"></i>Güncelle
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

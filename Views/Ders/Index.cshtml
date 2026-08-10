@@ -1,0 +1,92 @@
+﻿@model IEnumerable<OgrenciBilgiSistemi.Models.Ders>
+
+@{
+    ViewData["Title"] = "Ders Listesi";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">
+                <i class="bi bi-book-half me-2"></i>Ders Yönetimi
+            </h2>
+            <p class="text-muted small mb-0">Müfredatta yer alan dersleri listeleyebilir, yeni ders ekleyebilir veya mevcut ders bilgilerini güncelleyebilirsiniz.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary px-4 py-2 shadow-sm rounded-3">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Ders Ekle
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 text-secondary small text-uppercase fw-semibold">Ders Kodu</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">Ders Adı</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">Teori/Uyg.</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">Yerel Kredi</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">AKTS</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">Yarıyıl</th>
+                            <th class="py-3 text-secondary small text-uppercase fw-semibold">Zorunlu / Seçmeli</th>
+                            <th class="pe-4 py-3 text-end text-secondary small text-uppercase fw-semibold">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary opacity-50"></i>
+                                    Henüz tanımlanmış bir ders bulunmamaktadır.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-bold text-dark">@item.DersKodu</td>
+                                    <td class="fw-semibold text-dark">@item.DersAdi</td>
+                                    <td class="text-secondary">@item.TeoriSaat T + @item.UygulamaSaat U</td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border px-2 py-1">@item.YerelKredi Kredi</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">@item.Akts AKTS</span>
+                                    </td>
+                                    <td>@item.Yariyil. Yarıyıl</td>
+                                    <td>
+                                        @if (item.ZorunluMu)
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">Zorunlu</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1">Seçmeli</span>
+                                        }
+                                    </td>
+                                    <td class="pe-4 text-end">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning" title="Düzenle">
+                                                Düzenle
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Bu dersi silmek istediğinize emin misiniz?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-outline-danger" title="Sil">
+                                                    Sil
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

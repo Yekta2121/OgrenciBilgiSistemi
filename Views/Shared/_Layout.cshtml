@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OgrenciBilgiSistemi</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons kütüphanesi -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/OgrenciBilgiSistemi.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-mortarboard-fill me-2"></i>Öğrenci Bilgi Sistemi
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                        </li>
+
+                        <!-- SADECE GİRİŞ YAPMIŞ KULLANICILAR GÖREBİLİR -->
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ogrenci" asp-action="Index">
+                                    <i class="bi bi-people me-1"></i>Öğrenci Yönetimi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Ders" asp-action="Index">
+                                    <i class="bi bi-book me-1"></i>Ders İşlemleri
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="OgrenciNot" asp-action="Index">
+                                    <i class="bi bi-calculator me-1"></i>Not Girişi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="DersSecimi">
+                                    <i class="bi bi-check2-square me-1"></i>Ders Seçimi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="Durumum" asp-route-ogrenciNo="2026001">
+                                    <i class="bi bi-shield-exclamation me-1"></i>Devamsızlık Durumum
+                                </a>
+                            </li>
+                            <!-- YENİ EKLENEN BELGE VE TALEP LİNKLERİ -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="Index">
+                                    <i class="bi bi-file-earmark-text me-1"></i>Belge Talebi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="DilekceBasvuru">
+                                    <i class="bi bi-envelope-paper me-1"></i>Dilekçe Başvurusu
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Sağ Üst Kısım: Giriş / Çıkış Alanı -->
+                    <ul class="navbar-nav ms-auto">
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid px-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted position-fixed bottom-0 w-100 bg-white py-2">
+        <div class="container text-center">
+            &copy; 2026 - Öğrenci Bilgi Sistemi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<OgrenciBilgiSistemi.Models.BelgeTalebi>
+
+@{
+    ViewData["Title"] = "E-İmzalı Belge Talepleri";
+}
+
+<div class="container mt-4">
+    <h2><i class="bi bi-file-earmark-text me-2"></i>E-İmzalı Belge ve Transkript Talebi</h2>
+    <hr />
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mesaj"]</div>
+    }
+
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>Yeni Belge Talebi Oluştur</h4>
+        <form asp-action="TalepOlustur" method="post" class="row g-3 mt-2">
+            <div class="col-md-5">
+                <label class="form-label">Öğrenci Numarası</label>
+                <input type="text" name="ogrenciNo" class="form-control" placeholder="Örn: 2026001" required />
+            </div>
+            <div class="col-md-5">
+                <label class="form-label">Belge Türü</label>
+                <select name="belgeTuru" class="form-select">
+                    <option value="Öğrenci Belgesi">Öğrenci Belgesi (Türkçe)</option>
+                    <option value="Transkript Belgesi">Transkript Belgesi</option>
+                    <option value="Disiplin Belgesi Durumu">Disiplin Belgesi</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-printer me-1"></i>Talep Et</button>
+            </div>
+        </form>
+    </div>
+
+    <h4>Geçmiş Belge Talepleriniz ve Barkodlar</h4>
+    <table class="table table-bordered table-striped mt-3 align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Talep ID</th>
+                <th>Öğrenci No</th>
+                <th>Belge Türü</th>
+                <th>Barkod / Doğrulama Kodu</th>
+                <th>Tarih</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.OgrenciNo</td>
+                    <td>@item.BelgeTuru</td>
+                    <td><span class="badge bg-secondary font-monospace">@item.BarkodKodu</span></td>
+                    <td>@item.TalepTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td><span class="badge bg-success">@item.Durum</span></td>
+                    <td>
+                        <a asp-action="PdfIndir" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                            <i class="bi bi-file-earmark-pdf me-1"></i>PDF İndir
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
