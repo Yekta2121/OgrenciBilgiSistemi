@@ -339,6 +339,10 @@ namespace OgrenciBilgiSistemi.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("kredi");
 
+                    b.Property<int?>("OnKosulDersId")
+                        .HasColumnType("integer")
+                        .HasColumnName("on_kosul_ders_id");
+
                     b.Property<int>("TeoriSaat")
                         .HasColumnType("integer")
                         .HasColumnName("teori_saat");
@@ -375,12 +379,19 @@ namespace OgrenciBilgiSistemi.Migrations
                     b.Property<bool>("DanismanOnaylandiMi")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("DersId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("DersKodu")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("DonemYili")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Durum")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("KayitTarihi")
                         .HasColumnType("timestamp with time zone");
@@ -390,6 +401,8 @@ namespace OgrenciBilgiSistemi.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DersId");
 
                     b.ToTable("DersKayitlari");
                 });
@@ -526,6 +539,26 @@ namespace OgrenciBilgiSistemi.Migrations
                     b.ToTable("ogrenciler");
                 });
 
+            modelBuilder.Entity("OgrenciBilgiSistemi.Models.OgrenciMaliDurum", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("HarcBorcu")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("OgrenciNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OgrenciMaliDurumlari");
+                });
+
             modelBuilder.Entity("OgrenciBilgiSistemi.Models.OgrenciNot", b =>
                 {
                     b.Property<int>("Id")
@@ -650,6 +683,17 @@ namespace OgrenciBilgiSistemi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OgrenciBilgiSistemi.Models.DersKayit", b =>
+                {
+                    b.HasOne("OgrenciBilgiSistemi.Models.Ders", "Ders")
+                        .WithMany()
+                        .HasForeignKey("DersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ders");
                 });
 
             modelBuilder.Entity("OgrenciBilgiSistemi.Models.Ogrenci", b =>

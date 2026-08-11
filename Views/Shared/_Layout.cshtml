@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OgrenciBilgiSistemi.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -56,7 +56,6 @@
                                     <i class="bi bi-shield-exclamation me-1"></i>Devamsızlık Durumum
                                 </a>
                             </li>
-                            <!-- YENİ EKLENEN BELGE VE TALEP LİNKLERİ -->
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="Index">
                                     <i class="bi bi-file-earmark-text me-1"></i>Belge Talebi
@@ -78,17 +77,19 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid px-4">
+
+    <div class="container-fluid px-4 flex-grow-1 mb-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted position-fixed bottom-0 w-100 bg-white py-2">
+    <footer class="border-top footer text-muted bg-white py-3 mt-auto">
         <div class="container text-center">
             &copy; 2026 - Öğrenci Bilgi Sistemi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -2,42 +2,59 @@
 
 @{
     ViewData["Title"] = "Ders Seçim Ekranı";
+    string ogrenciNo = "2026001"; // Test için sabit öğrenci numarası
 }
 
 <div class="container mt-4">
-    <h2>Ders Seçim Ekranı</h2>
+    <h2><i class="bi bi-journal-check me-2"></i>Akademik Ders Seçim ve Kayıt Ekranı</h2>
+    <hr />
 
     @if (TempData["Mesaj"] != null)
     {
-        <div class="alert alert-info">
+        <div class="alert alert-success">
             @TempData["Mesaj"]
         </div>
     }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Hata"]
+        </div>
+    }
 
-    <table class="table table-bordered table-striped mt-3">
-        <thead>
-            <tr>
-                <th>Ders Kodu</th>
-                <th>Ders Adı</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ders in Model)
-            {
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>Alınabilir Dersler Havuzu</h4>
+        <table class="table table-bordered table-striped mt-3 align-middle">
+            <thead class="table-dark">
                 <tr>
-                    <td>@ders.DersKodu</td>
-                    <td>@ders.DersAdi</td>
-                    <td>
-                        <!-- Örnek olarak sabit bir öğrenci numarasıyla test edebilirsiniz -->
-                        <form asp-action="DersSecimiYap" method="post" class="d-inline">
-                            <input type="hidden" name="ogrenciNo" value="2026001" />
-                            <input type="hidden" name="dersKodu" value="@ders.DersKodu" />
-                            <button type="submit" class="btn btn-success btn-sm">Dersi Seç</button>
-                        </form>
-                    </td>
+                    <th>Ders Kodu</th>
+                    <th>Ders Adı</th>
+                    <th>AKTS</th>
+                    <th>İşlem</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var ders in Model)
+                    {
+                        <tr>
+                            <td>@ders.DersKodu</td>
+                            <td>@ders.DersAdi</td>
+                            <td><span class="badge bg-info text-dark">@ders.Akts AKTS</span></td>
+                            <td>
+                                <form asp-action="DersSecimiYap" method="post" class="d-inline">
+                                    <input type="hidden" name="ogrenciNo" value="@ogrenciNo" />
+                                    <input type="hidden" name="dersId" value="@ders.Id" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-plus-circle me-1"></i>Dersi Seç
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

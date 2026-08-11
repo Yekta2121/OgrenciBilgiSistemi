@@ -43,6 +43,10 @@ namespace OgrenciBilgiSistemi.Models
         [Column("kredi")]
         public int Kredi { get; set; } = 5;
 
+        // Ön koşul (prerequisite) dersinin ID'si (Opsiyonel / Boş geçilebilir)
+        [Column("on_kosul_ders_id")]
+        public int? OnKosulDersId { get; set; }
+
         public virtual ICollection<OgrenciNot>? OgrenciNotlari { get; set; }
     }
 }

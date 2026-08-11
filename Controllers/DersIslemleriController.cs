@@ -1,49 +1,51 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OgrenciBilgiSistemi.Data;
-using OgrenciBilgiSistemi.Models;
 using OgrenciBilgiSistemi.Servisler;
 
 namespace OgrenciBilgiSistemi.Controllers
 {
-    [Authorize] // Sisteme giriş yapmış kullanıcılar erişebilir
+    [Authorize]
     public class DersIslemleriController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly YoklamaVeDersMotoru _dersMotoru;
+        private readonly AkademikDersKayitMotoru _dersKayitMotoru;
 
-        public DersIslemleriController(ApplicationDbContext context, YoklamaVeDersMotoru dersMotoru)
+        public DersIslemleriController(ApplicationDbContext context, AkademikDersKayitMotoru dersKayitMotoru)
         {
             _context = context;
-            _dersMotoru = dersMotoru;
+            _dersKayitMotoru = dersKayitMotoru;
         }
 
-        // 1. Öğrencinin Ders Seçim Ekranı (GET)
         [HttpGet]
-        public IActionResult DersSecimi()
+        public async Task<IActionResult> DersSecimi(string ogrenciNo = "2026001")
         {
-            // Sistemdeki tüm dersleri listelemek üzere modele gönderiyoruz
-            var dersler = _context.Dersler.ToList();
+            ViewBag.OgrenciNo = ogrenciNo;
+            var dersler = await _context.Dersler.ToListAsync();
             return View(dersler);
         }
 
-        // 2. Ders Seçim İşlemi (POST)
         [HttpPost]
-        public IActionResult DersSecimiYap(string ogrenciNo, string dersKodu)
+        public async Task<IActionResult> DersSecimiYap(string ogrenciNo, int dersId)
         {
-            var sonuc = _dersMotoru.DersSecimiYap(ogrenciNo, dersKodu);
+            var sonuc = await _dersKayitMotoru.DersSecimiYapAsync(ogrenciNo, dersId);
 
-            TempData["Mesaj"] = sonuc.Mesaj;
-            return RedirectToAction(nameof(DersSecimi));
+            if (sonuc.Basarili)
+                TempData["Mesaj"] = sonuc.Mesaj;
+            else
+                TempData["Hata"] = sonuc.Mesaj;
+
+            return RedirectToAction(nameof(DersSecimi), new { ogrenciNo });
         }
 
-        // 3. Devamsızlık ve Not Durumunu Görüntüleme Ekranı
-        public IActionResult Durumum(string ogrenciNo)
+        public async Task<IActionResult> Durumum(string ogrenciNo)
         {
-            // Öğrencinin notlarını ve DZ durumlarını listeleyelim
-            var notlar = _context.OgrenciNotlar
+            var notlar = await _context.OgrenciNotlar
+                .Include(n => n.Ogrenci)
+                .Include(n => n.Ders)
                 .Where(n => n.Ogrenci != null && n.Ogrenci.OgrenciNo == ogrenciNo)
-                .ToList();
+                .ToListAsync();
 
             return View(notlar);
         }

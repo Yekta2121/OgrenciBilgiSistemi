@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OgrenciBilgiSistemi.Data;
-using OgrenciBilgiSistemi.Servisler; // Servis sınıfının namespace'i eklendi
+using OgrenciBilgiSistemi.Servisler; // Servis sınıfının namespace'i
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +21,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// --- YENİ EKLENEN KURUMSAL SERVİSLER ---
+// --- KURUMSAL VE AKADEMİK SERVİSLER ---
 builder.Services.AddScoped<YoklamaVeDersMotoru>();
 builder.Services.AddHttpContextAccessor(); // AuditLog için HTTP bağlamı erişimi
 builder.Services.AddScoped<AuditLogServisi>(); // KVKK ve 5651 Loglama Servisi
 builder.Services.AddScoped<BelgeVeTalepServisi>(); // Belge ve Talep Yönetimi Servisi
 builder.Services.AddScoped<PdfBelgeUreticiServisi>(); // E-İmzalı PDF Üretim Servisi
+builder.Services.AddScoped<AkademikDersKayitMotoru>(); // AKTS, Ön Koşul ve Borç Kontrol Motoru
 // ----------------------------------------
 
 // Add services to the container.

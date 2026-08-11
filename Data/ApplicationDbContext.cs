@@ -11,6 +11,8 @@ namespace OgrenciBilgiSistemi.Data
         public DbSet<Ogrenci> Ogrenciler { get; set; } = null!;
         public DbSet<Ders> Dersler { get; set; } = null!;
         public DbSet<OgrenciNot> OgrenciNotlar { get; set; } = null!;
+        public DbSet<OgrenciNot> OgrenciNotlari => OgrenciNotlar; // Alias (Uyum için)
+        public DbSet<OgrenciMaliDurum> OgrenciMaliDurumlari { get; set; } = null!;
         public DbSet<Bolum> Bolumler { get; set; } = null!;
 
         // Kurumsal Modüller
