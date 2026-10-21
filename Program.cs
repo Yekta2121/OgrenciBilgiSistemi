@@ -25,9 +25,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddScoped<YoklamaVeDersMotoru>();
 builder.Services.AddHttpContextAccessor(); // AuditLog için HTTP bağlamı erişimi
 builder.Services.AddScoped<AuditLogServisi>(); // KVKK ve 5651 Loglama Servisi
-builder.Services.AddScoped<BelgeVeTalepServisi>(); // Belge ve Talep Yönetimi Servisi
+builder.Services.AddScoped<BelgeVeTalepServisi>(); // Belge and Talep Yönetimi Servisi
 builder.Services.AddScoped<PdfBelgeUreticiServisi>(); // E-İmzalı PDF Üretim Servisi
 builder.Services.AddScoped<AkademikDersKayitMotoru>(); // AKTS, Ön Koşul ve Borç Kontrol Motoru
+builder.Services.AddScoped<HarcGuncellemeServisi>(); // Finans / Harç Entegrasyon Servisi
 // ----------------------------------------
 
 // Add services to the container.

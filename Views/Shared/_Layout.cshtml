@@ -31,41 +31,65 @@
                         <!-- SADECE GİRİŞ YAPMIŞ KULLANICILAR GÖREBİLİR -->
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Ogrenci" asp-action="Index">
-                                    <i class="bi bi-people me-1"></i>Öğrenci Yönetimi
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Ders" asp-action="Index">
-                                    <i class="bi bi-book me-1"></i>Ders İşlemleri
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="OgrenciNot" asp-action="Index">
-                                    <i class="bi bi-calculator me-1"></i>Not Girişi
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="DersSecimi">
-                                    <i class="bi bi-check2-square me-1"></i>Ders Seçimi
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="Durumum" asp-route-ogrenciNo="2026001">
-                                    <i class="bi bi-shield-exclamation me-1"></i>Devamsızlık Durumum
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="Index">
-                                    <i class="bi bi-file-earmark-text me-1"></i>Belge Talebi
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="DilekceBasvuru">
-                                    <i class="bi bi-envelope-paper me-1"></i>Dilekçe Başvurusu
-                                </a>
-                            </li>
+                            <!-- SADECE ÖĞRENCİ ROLÜNDEKİLER -->
+                            @if (User.IsInRole("Ogrenci"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="DersSecimi">
+                                        <i class="bi bi-check2-square me-1"></i>Ders Seçimi
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="DersIslemleri" asp-action="Durumum" asp-route-ogrenciNo="2026001">
+                                        <i class="bi bi-shield-exclamation me-1"></i>Devamsızlık Durumum
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="Index">
+                                        <i class="bi bi-file-earmark-text me-1"></i>Belge Talebi
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="BelgeTalep" asp-action="DilekceBasvuru">
+                                        <i class="bi bi-envelope-paper me-1"></i>Dilekçe Başvurusu
+                                    </a>
+                                </li>
+                            }
+
+                            <!-- SADECE AKADEMİSYEN / BÖLÜM BAŞKANI -->
+                            @if (User.IsInRole("Akademisyen") || User.IsInRole("BolumBaskani"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="OgrenciNot" asp-action="Index">
+                                        <i class="bi bi-calculator me-1"></i>Not Girişi
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Ders" asp-action="Index">
+                                        <i class="bi bi-book me-1"></i>Ders Yönetimi
+                                    </a>
+                                </li>
+                            }
+
+                            <!-- SADECE İDARİ PERSONEL / ÖĞRENCİ İŞLERİ / ADMIN / SİSTEM YÖNETİCİSİ -->
+                            @if (User.IsInRole("Admin") || User.IsInRole("Personel") || User.IsInRole("OgrenciIsleri") || User.IsInRole("SistemYoneticisi"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ogrenci" asp-action="Index">
+                                        <i class="bi bi-people me-1"></i>Öğrenci Yönetimi
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ders" asp-action="Index">
+                                        <i class="bi bi-book me-1"></i>Ders İşlemleri
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Finans" asp-action="OdemeSimulasyonu">
+                                        <i class="bi bi-bank me-1"></i>Harç Simülasyonu
+                                    </a>
+                                </li>
+                            }
                         }
                     </ul>
 
@@ -93,6 +117,5 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+    @await RenderSectionAsync("Scripts", required: false)</body>
 </html>
