@@ -554,6 +554,9 @@ namespace OgrenciBilgiSistemi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("SonOdemeTarihi")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("OgrenciMaliDurumlari");
